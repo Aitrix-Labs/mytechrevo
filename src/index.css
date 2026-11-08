@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #050816;
+    color: #fff;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: rgb(0 229 255 / 0.3);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  .bg-space-mesh {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .animate-tech-marquee {
+    display: flex;
+    width: max-content;
+    animation: tech-marquee-ltr 25s linear infinite;
+  }
+
+  .animate-tech-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  .animate-marquee-ltr {
+    display: flex;
+    width: max-content;
+    animation: marquee-ltr 32s linear infinite;
+  }
+
+  .animate-marquee-ltr:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes tech-marquee-ltr {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes marquee-ltr {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes float-particle {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(1) rotate(720deg);
+  }
+}
