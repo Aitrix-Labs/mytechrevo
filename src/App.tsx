@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { About } from './components/About'
 import { ChatWidget } from './components/ChatWidget'
 import { Contact } from './components/Contact'
@@ -8,74 +9,120 @@ import { Navbar } from './components/Navbar'
 import { Services } from './components/Services'
 import { Testimonials } from './components/Testimonials'
 
-const SECTION_IDS = [
-  { nav: 'home', el: 'home-section-root' },
-  { nav: 'service', el: 'service-section-root' },
-  { nav: 'testimonial', el: 'testimonial-section-root' },
-  { nav: 'contact', el: 'contact-section-root' },
+const NAV_TO_SECTION: Record<string, string> = {
+  home: 'home-section-root',
+  service: 'service-section-root',
+  blog: 'about-section-root',
+  project: 'service-section-root',
+  testimonial: 'testimonial-section-root',
+  customer: 'testimonial-section-root',
+  contact: 'contact-section-root',
+  developer: 'about-section-root',
+  about: 'about-section-root',
+}
+
+const SCROLL_SECTIONS = [
+  { key: 'home', el: 'home-section-root' },
+  { key: 'blog', el: 'about-section-root' },
+  { key: 'service', el: 'service-section-root' },
+  { key: 'testimonial', el: 'testimonial-section-root' },
+  { key: 'contact', el: 'contact-section-root' },
 ] as const
 
-function scrollToSection(navId: string) {
-  const map: Record<string, string> = {
-    home: 'home-section-root',
-    service: 'service-section-root',
-    blog: 'about-section-root',
-    project: 'service-section-root',
-    testimonial: 'testimonial-section-root',
-    customer: 'testimonial-section-root',
-    contact: 'contact-section-root',
-    developer: 'about-section-root',
-    about: 'about-section-root',
+/** Nav items that share a page section */
+const SECTION_VARIANTS: Record<string, string[]> = {
+  home: ['home'],
+  blog: ['blog', 'developer'],
+  service: ['service', 'project'],
+  testimonial: ['testimonial', 'customer'],
+  contact: ['contact'],
+}
+
+function sectionKeyForNav(navId: string): string {
+  for (const [key, variants] of Object.entries(SECTION_VARIANTS)) {
+    if (variants.includes(navId)) return key
   }
-  document.getElementById(map[navId] ?? navId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  return navId
+}
+
+function scrollToSection(navId: string) {
+  const el = document.getElementById(NAV_TO_SECTION[navId] ?? navId)
+  if (!el) return
+  const navHeight = document.getElementById('main-navigation')?.offsetHeight ?? 72
+  const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 8
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
 }
 
 export default function App() {
   const [active, setActive] = useState('home')
+  const [presetService, setPresetService] = useState('')
+  /** Remembers which nav item the user last chose for each shared section */
+  const preferredNav = useRef<Record<string, string>>({
+    home: 'home',
+    blog: 'blog',
+    service: 'service',
+    testimonial: 'testimonial',
+    contact: 'contact',
+  })
 
   useEffect(() => {
-    const onScroll = () => {
-      const offset = window.scrollY + 140
-      let current = 'home'
-      for (const section of SECTION_IDS) {
+    const resolveActive = () => {
+      const offset = window.scrollY + 160
+      let sectionKey = 'home'
+      for (const section of SCROLL_SECTIONS) {
         const el = document.getElementById(section.el)
-        if (el && el.offsetTop <= offset) current = section.nav
+        if (el && el.offsetTop <= offset) sectionKey = section.key
       }
-      const about = document.getElementById('about-section-root')
-      if (about && about.offsetTop <= offset && offset < (document.getElementById('service-section-root')?.offsetTop ?? Infinity)) {
-        // keep home/service mapping simple; about is reached via blog/developer
-      }
-      setActive(current)
+      const preferred = preferredNav.current[sectionKey]
+      const variants = SECTION_VARIANTS[sectionKey] ?? [sectionKey]
+      setActive(preferred && variants.includes(preferred) ? preferred : sectionKey)
     }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+
+    resolveActive()
+    window.addEventListener('scroll', resolveActive, { passive: true })
+    return () => window.removeEventListener('scroll', resolveActive)
   }, [])
 
   const onNavigate = (id: string) => {
-    setActive(id === 'blog' || id === 'developer' || id === 'about' ? 'home' : id === 'project' || id === 'customer' ? (id === 'customer' ? 'testimonial' : 'service') : id)
+    const key = sectionKeyForNav(id)
+    preferredNav.current[key] = id
+    setActive(id)
     scrollToSection(id)
   }
 
+  const requestService = (serviceTitle: string) => {
+    setPresetService(serviceTitle)
+    onNavigate('contact')
+  }
+
   return (
-    <div className="min-h-screen bg-[#050816] font-sans antialiased text-white selection:bg-[#00E5FF]/30 selection:text-white">
-      <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-[#7C4DFF]/5 rounded-full blur-[150px] pointer-events-none -z-10" />
-      <div className="fixed top-1/3 right-1/4 w-[400px] h-[400px] bg-[#00E5FF]/5 rounded-full blur-[120px] pointer-events-none -z-10" />
+    <BrowserRouter basename="/mytechrevo">
+      <Routes>
+        <Route
+          path="*"
+          element={
+            <div className="min-h-screen bg-[#050816] font-sans antialiased text-white selection:bg-[#00E5FF]/30 selection:text-white">
+              <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-[#7C4DFF]/5 rounded-full blur-[150px] pointer-events-none -z-10" />
+              <div className="fixed top-1/3 right-1/4 w-[400px] h-[400px] bg-[#00E5FF]/5 rounded-full blur-[120px] pointer-events-none -z-10" />
 
-      <Navbar active={active} onNavigate={onNavigate} />
+              <Navbar active={active} onNavigate={onNavigate} />
 
-      <main className="relative z-10">
-        <div className="space-y-32">
-          <Hero onNavigate={onNavigate} />
-          <About />
-          <Services onRequest={() => onNavigate('contact')} />
-          <Testimonials />
-          <Contact />
-        </div>
-      </main>
+              <main className="relative z-10 w-full overflow-x-hidden">
+                <div className="space-y-16 sm:space-y-24 lg:space-y-32">
+                  <Hero onNavigate={onNavigate} />
+                  <About />
+                  <Services onRequest={requestService} />
+                  <Testimonials />
+                  <Contact presetService={presetService} />
+                </div>
+              </main>
 
-      <Footer onNavigate={onNavigate} />
-      <ChatWidget />
-    </div>
+              <Footer onNavigate={onNavigate} />
+              <ChatWidget />
+            </div>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   )
 }

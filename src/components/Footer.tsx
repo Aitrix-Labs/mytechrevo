@@ -19,15 +19,15 @@ export function Footer({ onNavigate }: FooterProps) {
   }
 
   return (
-    <footer id="footer-section-root" className="relative bg-[#050816] border-t border-white/[0.04] text-white pt-20 pb-10">
-      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-l from-[#7C4DFF]/5 to-transparent rounded-full blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-gradient-to-r from-[#00E5FF]/3 to-transparent rounded-full blur-[100px] pointer-events-none -z-10" />
+    <footer id="footer-section-root" className="relative bg-[#050816] border-t border-white/[0.04] text-white pt-14 sm:pt-20 pb-8 sm:pb-10 overflow-hidden">
+      <div className="absolute bottom-0 right-0 w-[280px] sm:w-[400px] h-[280px] sm:h-[400px] bg-gradient-to-l from-[#7C4DFF]/5 to-transparent rounded-full blur-[120px] pointer-events-none -z-10" />
+      <div className="absolute top-0 left-0 w-[220px] sm:w-[300px] h-[220px] sm:h-[300px] bg-gradient-to-r from-[#00E5FF]/3 to-transparent rounded-full blur-[100px] pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-12 border-b border-white/[0.04] pb-16">
-        <div className="md:col-span-3 space-y-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 sm:gap-12 border-b border-white/[0.04] pb-12 sm:pb-16">
+        <div className="sm:col-span-2 md:col-span-3 space-y-6">
           <button type="button" className="flex items-center gap-2 cursor-pointer group" onClick={() => onNavigate('home')}>
             <Logo showText={false} />
-            <span className="font-sans font-bold tracking-tight text-lg text-white">
+            <span className="font-sans font-bold tracking-tight text-base sm:text-lg text-white">
               MYTECH <span className="text-[#10B981] font-extrabold">REVO</span>
             </span>
           </button>
@@ -133,7 +133,7 @@ export function Footer({ onNavigate }: FooterProps) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-[#94A3B8] font-mono">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 text-[10px] text-[#94A3B8] font-mono text-center sm:text-left">
         <p>© 2026 mytechrevo.com. World class custom engineering. All rights reserved.</p>
         <p>Engineered for raw performance (60 FPS)</p>
       </div>

@@ -13,17 +13,6 @@ const NAV_LINKS = [
   { id: 'developer', label: 'Developer' },
 ] as const
 
-const SECTION_MAP: Record<string, string> = {
-  home: 'home-section-root',
-  service: 'service-section-root',
-  blog: 'about-section-root',
-  project: 'service-section-root',
-  testimonial: 'testimonial-section-root',
-  customer: 'testimonial-section-root',
-  contact: 'contact-section-root',
-  developer: 'about-section-root',
-}
-
 type NavbarProps = {
   active: string
   onNavigate: (id: string) => void
@@ -40,24 +29,37 @@ export function Navbar({ active, onNavigate }: NavbarProps) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth >= 1024) setMobileOpen(false)
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileOpen])
+
   const go = (id: string) => {
     onNavigate(id)
     setMobileOpen(false)
-    const el = document.getElementById(SECTION_MAP[id] ?? id)
-    el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   return (
     <nav
       id="main-navigation"
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-        scrolled
-          ? 'py-3 bg-[#050816]/80 backdrop-blur-md border-b border-[#7C4DFF]/20 shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
-          : 'py-6 bg-transparent border-b border-transparent'
+        scrolled || mobileOpen
+          ? 'py-3 bg-[#050816]/90 backdrop-blur-md border-b border-[#7C4DFF]/20 shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
+          : 'py-4 sm:py-6 bg-transparent border-b border-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <button type="button" id="nav-logo" className="cursor-pointer group" onClick={() => go('home')}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-3">
+        <button type="button" id="nav-logo" className="cursor-pointer group shrink-0" onClick={() => go('home')}>
           <Logo />
         </button>
 
@@ -73,7 +75,7 @@ export function Navbar({ active, onNavigate }: NavbarProps) {
                 id={`nav-link-${link.id}`}
                 type="button"
                 onClick={() => go(link.id)}
-                className={`relative px-4 py-2 rounded-full text-xs font-medium tracking-wide transition-all duration-300 ${
+                className={`relative px-3 xl:px-4 py-2 rounded-full text-xs font-medium tracking-wide transition-all duration-300 ${
                   isActive ? 'text-[#00E5FF] font-semibold' : 'text-[#94A3B8] hover:text-white'
                 }`}
               >
@@ -108,32 +110,35 @@ export function Navbar({ active, onNavigate }: NavbarProps) {
           className="lg:hidden p-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#94A3B8] hover:text-white transition-all duration-300"
           onClick={() => setMobileOpen((v) => !v)}
           aria-label="Toggle menu"
+          aria-expanded={mobileOpen}
         >
-          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {mobileOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
         </button>
       </div>
 
       {mobileOpen && (
-        <div className="lg:hidden mx-6 mt-3 p-4 rounded-2xl bg-[#0B0F19]/95 border border-white/[0.08] backdrop-blur-md space-y-1">
-          {NAV_LINKS.map((link) => (
+        <div className="lg:hidden absolute top-full left-0 right-0 max-h-[min(70vh,520px)] overflow-y-auto border-b border-white/[0.08] bg-[#050816]/98 backdrop-blur-xl">
+          <div className="mx-4 sm:mx-6 my-3 p-3 sm:p-4 rounded-2xl bg-[#0B0F19]/95 border border-white/[0.08] space-y-1">
+            {NAV_LINKS.map((link) => (
+              <button
+                key={link.id}
+                type="button"
+                onClick={() => go(link.id)}
+                className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium ${
+                  active === link.id ? 'text-[#00E5FF] bg-[#00E5FF]/10' : 'text-[#94A3B8] hover:text-white'
+                }`}
+              >
+                {link.label}
+              </button>
+            ))}
             <button
-              key={link.id}
               type="button"
-              onClick={() => go(link.id)}
-              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium ${
-                active === link.id ? 'text-[#00E5FF] bg-[#00E5FF]/10' : 'text-[#94A3B8] hover:text-white'
-              }`}
+              onClick={() => go('contact')}
+              className="w-full mt-2 px-4 py-3 rounded-xl text-sm font-semibold border border-[#00E5FF]/40 text-white"
             >
-              {link.label}
+              Client Portal
             </button>
-          ))}
-          <button
-            type="button"
-            onClick={() => go('contact')}
-            className="w-full mt-2 px-4 py-2.5 rounded-xl text-xs font-semibold border border-[#00E5FF]/40 text-white"
-          >
-            Client Portal
-          </button>
+          </div>
         </div>
       )}
     </nav>

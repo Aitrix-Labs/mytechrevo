@@ -156,30 +156,30 @@ const SERVICES: Service[] = [
 ]
 
 type ServicesProps = {
-  onRequest: () => void
+  onRequest: (serviceTitle: string) => void
 }
 
 export function Services({ onRequest }: ServicesProps) {
   return (
-    <section id="service-section-root" className="max-w-7xl mx-auto px-6 scroll-mt-24">
-      <div className="text-center max-w-xl mx-auto space-y-2 mb-16">
+    <section id="service-section-root" className="max-w-7xl mx-auto px-4 sm:px-6 scroll-mt-24">
+      <div className="text-center max-w-xl mx-auto space-y-2 mb-10 sm:mb-16">
         <span className="text-[10px] uppercase tracking-widest font-mono text-[#7C4DFF] font-bold bg-[#7C4DFF]/10 px-3 py-1 rounded-full">
           Excellence Matrix
         </span>
-        <h2 className="font-sans font-extrabold text-3xl tracking-tight leading-tight text-white uppercase">Our Capabilities</h2>
-        <p className="text-xs text-[#94A3B8]">
+        <h2 className="font-sans font-extrabold text-2xl sm:text-3xl tracking-tight leading-tight text-white uppercase">Our Capabilities</h2>
+        <p className="text-xs text-[#94A3B8] px-1">
           From pixel rendering to vector databases, we construct cohesive tech ecosystems for forward-thinking enterprises.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
         {SERVICES.map((service) => {
           const Icon = service.icon
           return (
             <div
               key={service.id}
               id={`service-card-${service.id}`}
-              className="group p-8 rounded-3xl bg-[#0F172A]/40 border border-white/[0.04] hover:border-white/[0.1] hover:shadow-[0_0_40px_rgba(0,229,255,0.06)] transition-all duration-500 space-y-6 flex flex-col justify-between relative overflow-hidden"
+              className="group p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#0F172A]/40 border border-white/[0.04] hover:border-white/[0.1] hover:shadow-[0_0_40px_rgba(0,229,255,0.06)] transition-all duration-500 space-y-6 flex flex-col justify-between relative overflow-hidden min-w-0"
             >
               <div className="space-y-4">
                 <div className="w-12 h-12 rounded-2xl bg-[#050816]/60 border border-white/[0.1] flex items-center justify-center relative overflow-hidden">
@@ -204,7 +204,7 @@ export function Services({ onRequest }: ServicesProps) {
                 ))}
                 <button
                   type="button"
-                  onClick={onRequest}
+                  onClick={() => onRequest(service.title)}
                   className="flex items-center gap-1.5 text-xs font-semibold text-[#00E5FF] hover:text-white transition-colors duration-300 pt-2 cursor-pointer"
                 >
                   Request Solution <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

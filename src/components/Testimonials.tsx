@@ -19,7 +19,7 @@ const TESTIMONIALS = [
 
 function Card({ quote, name, role, avatar }: (typeof TESTIMONIALS)[number]) {
   return (
-    <div className="w-[300px] sm:w-[380px] flex-shrink-0 p-6 sm:p-8 rounded-3xl bg-[#0B0F19]/60 border border-white/[0.04] hover:border-[#00E5FF]/20 flex flex-col justify-between space-y-6 relative overflow-hidden backdrop-blur-md cursor-pointer transition-colors duration-300 shadow-[0_4px_30px_rgba(0,0,0,0.4)]">
+    <div className="w-[280px] sm:w-[380px] flex-shrink-0 p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#0B0F19]/60 border border-white/[0.04] hover:border-[#00E5FF]/20 flex flex-col justify-between space-y-6 relative overflow-hidden backdrop-blur-md cursor-pointer transition-colors duration-300 shadow-[0_4px_30px_rgba(0,0,0,0.4)]">
       <Quote className="absolute -top-3 -right-2 w-16 h-16 text-white/[0.015] pointer-events-none rotate-12" />
       <div className="space-y-3 relative z-10">
         <div className="flex items-center gap-0.5">
@@ -48,26 +48,26 @@ export function Testimonials() {
   const loop = [...TESTIMONIALS, ...TESTIMONIALS, ...TESTIMONIALS, ...TESTIMONIALS]
 
   return (
-    <section id="testimonial-section-root" className="max-w-7xl mx-auto px-6 scroll-mt-24">
-      <div className="text-center max-w-xl mx-auto space-y-2 mb-16">
+    <section id="testimonial-section-root" className="max-w-7xl mx-auto px-4 sm:px-6 scroll-mt-24 overflow-hidden">
+      <div className="text-center max-w-xl mx-auto space-y-2 mb-10 sm:mb-16">
         <span className="text-[10px] uppercase tracking-widest font-mono text-[#00FFB3] font-bold bg-[#00FFB3]/10 px-3 py-1 rounded-full">
           Verified Trust
         </span>
-        <h2 className="font-sans font-extrabold text-3xl tracking-tight leading-tight text-white uppercase">
+        <h2 className="font-sans font-extrabold text-2xl sm:text-3xl tracking-tight leading-tight text-white uppercase">
           Client Partnerships
         </h2>
-        <p className="text-xs text-[#94A3B8]">
+        <p className="text-xs text-[#94A3B8] px-1">
           See why tech startups and enterprise teams trust MyTechRevo to architect their core pipelines.
         </p>
       </div>
 
-      <div className="relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[150px] bg-gradient-to-r from-[#00E5FF]/3 via-[#7C4DFF]/3 to-[#00FFB3]/3 rounded-full blur-[80px] pointer-events-none" />
-        <div className="absolute top-0 left-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-[#050816] via-[#050816]/70 to-transparent z-10 pointer-events-none" />
-        <div className="absolute top-0 right-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-[#050816] via-[#050816]/70 to-transparent z-10 pointer-events-none" />
+      <div className="relative -mx-4 sm:mx-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(100vw,600px)] h-[150px] bg-gradient-to-r from-[#00E5FF]/3 via-[#7C4DFF]/3 to-[#00FFB3]/3 rounded-full blur-[80px] pointer-events-none" />
+        <div className="absolute top-0 left-0 bottom-0 w-10 sm:w-32 bg-gradient-to-r from-[#050816] via-[#050816]/70 to-transparent z-10 pointer-events-none" />
+        <div className="absolute top-0 right-0 bottom-0 w-10 sm:w-32 bg-gradient-to-l from-[#050816] via-[#050816]/70 to-transparent z-10 pointer-events-none" />
 
         <div className="relative w-full overflow-hidden">
-          <div className="animate-marquee-ltr gap-6 px-4">
+          <div className="animate-marquee-ltr gap-4 sm:gap-6 px-4">
             {loop.map((item, i) => (
               <Card key={`${item.name}-${i}`} {...item} />
             ))}

@@ -37,13 +37,13 @@ const FEATURES = [
 
 export function About() {
   return (
-    <section id="about-section-root" className="max-w-7xl mx-auto px-6 scroll-mt-24">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <div className="lg:col-span-5 space-y-6">
+    <section id="about-section-root" className="max-w-7xl mx-auto px-4 sm:px-6 scroll-mt-24">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center">
+        <div className="lg:col-span-5 space-y-5 sm:space-y-6 min-w-0">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00FFB3]/10 border border-[#00FFB3]/30 text-[#00FFB3] text-[9px] font-mono font-bold tracking-widest uppercase">
             Our DNA
           </div>
-          <h2 className="font-sans font-extrabold text-3xl tracking-tight leading-tight text-white uppercase">Who We Are</h2>
+          <h2 className="font-sans font-extrabold text-2xl sm:text-3xl tracking-tight leading-tight text-white uppercase">Who We Are</h2>
           <p className="text-xs text-[#94A3B8] leading-relaxed">
             MyTechRevo was forged by elite engineers with a simple vision: to eliminate the friction between complex
             technology pipelines and beautiful, intuitive customer experiences.
@@ -78,13 +78,13 @@ export function About() {
           </div>
         </div>
 
-        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           {FEATURES.map((feature) => {
             const Icon = feature.icon
             return (
               <div
                 key={feature.title}
-                className={`p-6 rounded-3xl border ${feature.color} ${feature.border} space-y-4 hover:-translate-y-1.5 transition-transform duration-500 flex flex-col justify-between`}
+                className={`p-5 sm:p-6 rounded-2xl sm:rounded-3xl border ${feature.color} ${feature.border} space-y-4 hover:-translate-y-1.5 transition-transform duration-500 flex flex-col justify-between min-w-0`}
               >
                 <div className="w-10 h-10 rounded-2xl bg-[#050816]/60 border border-white/[0.1] flex items-center justify-center">
                   <Icon className={`w-5 h-5 ${feature.color}`} />
